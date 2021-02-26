@@ -7,16 +7,16 @@ pipeline {
             echo "$GIT_BRANCH"
          }
       }
-     stage('Docker Build') {
-         steps {
-            sh 'docker images -a'
-            sh 'cd azure-vote/'
-            sh 'docker images -a'
-            sh 'docker build -t jenkins-pipeline .'
-            sh 'docker images -a'
-            sh 'cd ..'
-         }
-      }
+   //   stage('Docker Build') {
+   //       steps {
+   //          sh 'docker images -a'
+   //          sh 'cd azure-vote/'
+   //          sh 'docker images -a'
+   //          sh 'docker build -t jenkins-pipeline .'
+   //          sh 'docker images -a'
+   //          sh 'cd ..'
+   //       }
+   //    }
    //    stage('Start test app') {
    //       steps {
    //          pwsh(script: """
