@@ -10,40 +10,37 @@ pipeline {
      stage('Docker Build') {
          steps {
             sh 'docker images -a'
-            sh 'docker build -t jenkins-pipeline azure-vote/.'
+            sh 'cd azure-vote/'
             sh 'docker images -a'
+            sh 'docker build -t jenkins-pipeline .'
+            sh 'docker images -a'
+            sh 'cd ..'
          }
       }
-   //    stage('Start test app') {
-   //       steps {
-   //          pwsh(script: """
-   //             docker-compose up -d
-   //             ./scripts/test_container.ps1
-   //          """)
-   //       }
-   //       post {
-   //          success {
-   //             echo "App started successfully :)"
-   //          }
-   //          failure {
-   //             echo "App failed to start :("
-   //          }
-   //       }
-   //    }
-   //    stage('Run Tests') {
-   //       steps {
-   //          pwsh(script: """
-   //             pytest ./tests/test_sample.py
-   //          """)
-   //       }
-   //    }
-   //    stage('Stop test app') {
-   //       steps {
-   //          pwsh(script: """
-   //             docker-compose down
-   //          """)
-   //       }
-   //    }
+      stage('Start test app') {
+         steps {
+            sh 'docker-compose up -d'
+            sh './scripts/test_container.sh'
+         }
+         post {
+            success {
+               echo "App started successfully :)"
+            }
+            failure {
+               echo "App failed to start :("
+            }
+         }
+      }
+      stage('Run Tests') {
+         steps {
+            sh 'pytest ./tests/test_sample.py'
+         }
+      }
+      stage('Stop test app') {
+         steps {
+            sh 'docker-compose down'
+         }
+      }
    //    stage('Container Scanning') {
    //       parallel {
    //          stage('Run Anchore') {
