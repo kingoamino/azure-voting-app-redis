@@ -30,7 +30,7 @@ pipeline {
       }
       stage('Run Tests') {
          steps {
-            sh 'pytest ./tests/test_sample.py'
+            sh './tests/test_sample.py'
          }
       }
       stage('Stop test app') {
