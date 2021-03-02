@@ -30,7 +30,7 @@ pipeline {
       }
       stage('Run Tests') {
          steps {
-            sh './tests/test_sample.py'
+            sh 'python3 tests/test_sample.py'
          }
       }
       stage('Stop test app') {
