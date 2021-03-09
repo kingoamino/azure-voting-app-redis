@@ -7,13 +7,13 @@ pipeline {
             echo "$GIT_BRANCH"
          }
       }
-     stage('Docker Build') {
-         steps {
-            //sh 'docker images -a'
-            sh 'docker build -t jenkins-pipeline .'
-            //sh 'docker images -a'
-         }
-      }
+   //   stage('Docker Build') {
+   //       steps {
+   //          //sh 'docker images -a'
+   //          sh 'docker build -t jenkins-pipeline .'
+   //          //sh 'docker images -a'
+   //       }
+   //    }
       // stage('Start test app') {
       //    steps {
       //       sh 'docker-compose up -d'
@@ -38,19 +38,19 @@ pipeline {
       //       sh 'docker-compose down'
       //    }
       // }
-      // stage('Push Container') {
-      //    steps {
-      //       echo "Workspace is $WORKSPACE"
-      //       dir("$WORKSPACE/azure-vote") {
-      //          script {
-      //             docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
-      //                def image = docker.build('kingoamino/course:latest')
-      //                image.push()
-      //             }
-      //          }
-      //       }
-      //    }
-      // }
+      stage('Push Container') {
+         steps {
+            echo "Workspace is $WORKSPACE"
+            dir("$WORKSPACE/azure-vote") {
+               script {
+                  docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
+                     def image = docker.build('kingoamino/course:latest')
+                     image.push()
+                  }
+               }
+            }
+         }
+      }
       // docker tag local-image:tagname new-repo:tagname
       // docker push new-repo:tagname
    //    stage('Container Scanning') {
