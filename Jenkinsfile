@@ -9,48 +9,50 @@ pipeline {
       }
      stage('Docker Build') {
          steps {
+            sh 'docker images -a'
+            sh 'docker build -t jenkins-pipeline .'
             //sh 'docker images -a'
-            sh 'docker build -f Dockerfile -t jenkins-pipeline .'
-            //sh 'docker images -a'
          }
       }
-      stage('Start test app') {
-         steps {
-            sh 'docker-compose up -d'
-            sh './scripts/test_container.sh'
-         }
-         post {
-            success {
-               echo "App started successfully :)"
-            }
-            failure {
-               echo "App failed to start :("
-            }
-         }
-      }
-      stage('Run Tests') {
-         steps {
-            sh 'python3 tests/test_sample.py'
-         }
-      }
-      stage('Stop test app') {
-         steps {
-            sh 'docker-compose down'
-         }
-      }
-      stage('Push Container') {
-         steps {
-            echo "Workspace is $WORKSPACE"
-            dir("$WORKSPACE/azure-vote") {
-               script {
-                  docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
-                     def image = docker.build('blackdentech/jenkins-course-test:latest')
-                     image.push()
-                  }
-               }
-            }
-         }
-      }
+      // stage('Start test app') {
+      //    steps {
+      //       sh 'docker-compose up -d'
+      //       sh './scripts/test_container.sh'
+      //    }
+      //    post {
+      //       success {
+      //          echo "App started successfully :)"
+      //       }
+      //       failure {
+      //          echo "App failed to start :("
+      //       }
+      //    }
+      // }
+      // stage('Run Tests') {
+      //    steps {
+      //       sh 'python3 tests/test_sample.py'
+      //    }
+      // }
+      // stage('Stop test app') {
+      //    steps {
+      //       sh 'docker-compose down'
+      //    }
+      // }
+      // stage('Push Container') {
+      //    steps {
+      //       echo "Workspace is $WORKSPACE"
+      //       dir("$WORKSPACE/azure-vote") {
+      //          script {
+      //             docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
+      //                def image = docker.build('kingoamino/course:latest')
+      //                image.push()
+      //             }
+      //          }
+      //       }
+      //    }
+      // }
+      // docker tag local-image:tagname new-repo:tagname
+      // docker push new-repo:tagname
    //    stage('Container Scanning') {
    //       parallel {
    //          stage('Run Anchore') {
